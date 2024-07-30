@@ -12,7 +12,7 @@ pillow
 psutil
 py-tgcalls==0.9.7
 pykeyboard
-git+https://github.com/vicky0604hello
+pyrofork
 python-dotenv
 pyyaml
 requests
