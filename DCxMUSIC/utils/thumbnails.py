@@ -1,5 +1,4 @@
-
-import os
+/eval import os
 import re
 import random
 
@@ -10,11 +9,10 @@ from PIL import Image, ImageDraw, ImageEnhance
 from PIL import ImageFilter, ImageFont, ImageOps
 
 from unidecode import unidecode
-from youtubesearchpython.__future__ import VideosSearch
+from youtubesearchpython.future import VideosSearch
 
 from DCxMUSIC import app
 from config import YOUTUBE_IMG_URL
-
 
 def changeImageSize(maxWidth, maxHeight, image):
     widthRatio = maxWidth / image.size[0]
@@ -24,7 +22,6 @@ def changeImageSize(maxWidth, maxHeight, image):
     newImage = image.resize((newWidth, newHeight))
     return newImage
 
-
 def clear(text):
     list = text.split(" ")
     title = ""
@@ -32,7 +29,6 @@ def clear(text):
         if len(title) + len(i) < 60:
             title += " " + i
     return title.strip()
-
 
 async def get_thumb(videoid):
     if os.path.isfile(f"cache/{videoid}.png"):
@@ -69,8 +65,8 @@ async def get_thumb(videoid):
                     await f.write(await resp.read())
                     await f.close()
 
-        
-        colors = ["white", "red", "orange", "yellow", "green", "cyan", "azure", "blue", "violet", "magenta", "pink"]
+        # Futuristic view
+        colors = ["#3498db", "#f1c40f", "#2ecc71", "#e74c3c", "#9b59b6"]
         border = random.choice(colors)
         youtube = Image.open(f"cache/thumb{videoid}.png")
         image1 = changeImageSize(1280, 720, youtube)
@@ -80,52 +76,19 @@ async def get_thumb(videoid):
         bg_logo = bg_contra.enhance(1.1)
         logox = ImageOps.expand(bg_logo, border=7, fill=f"{border}")
         background = changeImageSize(1280, 720, logox)
-        # image2 = image1.convert("RGBA")
-        # background = image2.filter(filter=ImageFilter.BoxBlur(1))
-        #enhancer = ImageEnhance.Brightness(background)
-        #background = enhancer.enhance(0.9)
-        #draw = ImageDraw.Draw(background)
-        #arial = ImageFont.truetype("DCxMUSIC/assets/font2.ttf", 30)
-        #font = ImageFont.truetype("DCxMUSIC/assets/font.ttf", 30)
-        # draw.text((1110, 8), unidecode(app.name), fill="white", font=arial)
-        """
-        draw.text(
-            (1, 1),
-            f"{channel} | {views[:23]}",
-            (1, 1, 1),
-            font=arial,
-        )
-        draw.text(
-            (1, 1),
-            clear(title),
-            (1, 1, 1),
-            font=font,
-        )
-        draw.line(
-            [(1, 1), (1, 1)],
-            fill="white",
-            width=1,
-            joint="curve",
-        )
-        draw.ellipse(
-            [(1, 1), (2, 1)],
-            outline="white",
-            fill="white",
-            width=1,
-        )
-        draw.text(
-            (1, 1),
-            "00:00",
-            (1, 1, 1),
-            font=arial,
-        )
-        draw.text(
-            (1, 1),
-            f"{duration[:23]}",
-            (1, 1, 1),
-            font=arial,
-        )
-        """
+
+        # Add futuristic effects
+        draw = ImageDraw.Draw(background)
+        font = ImageFont.truetype("DCxMUSIC/assets/font.ttf", 30)
+        draw.text((10, 10), unidecode(app.name), fill="#ffffff", font=font)
+        draw.text((10, 50), clear(title), fill="#ffffff", font=font)
+        draw.text((10, 90), f"{channel} | {views[:23]}", fill="#ffffff", font=font)
+        draw.text((10, 130), f"{duration[:23]}", fill="#ffffff", font=font)
+
+        # Add futuristic shapes
+        draw.polygon([(1280 - 10, 10), (1280 - 10, 50), (1280 - 50, 30)], fill="#ffffff")
+        draw.ellipse([(1280 - 50, 10), (1280 - 10, 50)], outline="#ffffff", fill="#ffffff")
+
         try:
             os.remove(f"cache/thumb{videoid}.png")
         except:
